@@ -79,6 +79,7 @@ public class ProductMasterDaoJdbcImpl implements ProductMasterDao {
 
 	@Override
 	public List<ProductMaster> getAll() throws ProductException {
+		System.out.println("in getAll");
 		List<ProductMaster> products = new ArrayList<>();
 		
 		try (Connection con = ConnectionFactory.getConnection();
@@ -92,17 +93,17 @@ public class ProductMasterDaoJdbcImpl implements ProductMasterDao {
 				product.setProductName(rs.getString(2));
 				product.setProductDescription(rs.getString(3));
 				product.setCost(rs.getDouble(4));
-							
+				System.out.println("Fetched product:"+product);			
 				products.add(product);
 			}
-			
+			System.out.println("products list:"+products);
 			if(products.isEmpty()) {
 				products=null;
 			}
 		} catch (SQLException exp) {
 			throw new ProductException("An error occured, Could not retrive the product details!");
 		}
-				
+		System.out.println("returning products list:"+products);	
 		return products;
 	}
 

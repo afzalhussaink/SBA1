@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" isErrorPage="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +12,7 @@
 <hr/>
 	<div>
 		<h3>Something went wrong! We regret the inconvenience!</h3>
-		<p>Error Message : <%=exception.getMessage()%> </p>
+		<p>Error Message : <font color="red">${errMsg }</font> </p>
 		<p>Please Contact Administrator</p>
 	</div>
 <hr/>	

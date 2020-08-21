@@ -91,34 +91,52 @@ public class AdminController extends HttpServlet {
 	private String listAllProducts(HttpServletRequest request, HttpServletResponse response) {
 		String view="";
         try {
+        	System.out.println("calling get all products");
             List<ProductMaster> products = productService.getAllProducts();
             request.setAttribute("products", products);
             view="listproducts.jsp";
         } catch (ProductException e) {
             request.setAttribute("errMsg", e.getMessage());
-            view="errPage.jsp";
+            view="errorpage.jsp";
         }
         return view;
 	}
 
 	private String updateProduct(HttpServletRequest request, HttpServletResponse response) {
 		String view = "";
-        int productId = Integer.parseInt(request.getParameter("id"));
+		ProductMaster product = new ProductMaster();
+		        
+		product.setId(Integer.parseInt(request.getParameter("pid")));
+		product.setProductName(request.getParameter("pname"));
+		product.setProductDescription(request.getParameter("pdesc"));
+		product.setCost(Double.parseDouble(request.getParameter("pcost")));
+		
         try {
-        	ProductMaster product = productService.getProduct(productId);
-            request.setAttribute("product", product);
-            request.setAttribute("isNew", false);
-            view = "editproduct.jsp";
+        	productService.validateAndSave(product);
+        	request.setAttribute("msg", "Product is saved successfully");
+			List<ProductMaster> products = productService.getAllProducts();
+            request.setAttribute("products", products);
+            view="listproducts.jsp";
         } catch (ProductException e) {
             request.setAttribute("errMsg", e.getMessage());
-            view = "errPage.jsp";
+            view = "errorpage.jsp";
         }
         return view;
 	}
 
 	private String showEditProductForm(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
+		String view="";
+		int productId = Integer.parseInt(request.getParameter("id"));
+		try {
+			ProductMaster product = productService.getProduct(productId);
+			request.setAttribute("product", product);
+			view = "editproduct.jsp";
+		} catch (ProductException e) {
+            request.setAttribute("errMsg", e.getMessage());
+            view = "errorpage.jsp";
+        }
+		
+		return view;
 	}
 
 	private String deleteProduct(HttpServletRequest request, HttpServletResponse response) {
@@ -127,7 +145,9 @@ public class AdminController extends HttpServlet {
         try {
             productService.deleteProduct(productId);
             request.setAttribute("msg", "Product Deleted!");
-            view = "index.jsp";
+            List<ProductMaster> products = productService.getAllProducts();
+            request.setAttribute("products", products);
+            view="listproducts.jsp";
         } catch (ProductException e) {
             request.setAttribute("errMsg", e.getMessage());
             view = "errorpage.jsp";
@@ -136,21 +156,49 @@ public class AdminController extends HttpServlet {
 	}
 
 	private String insertProduct(HttpServletRequest request, HttpServletResponse response) {
-		String view = "";
-        ProductMaster product = new ProductMaster();
-        request.setAttribute("product", product);
-        request.setAttribute("isNew", true);
-        view = "newproduct.jsp";
+		/*
+		 * String view = ""; ProductMaster product = new ProductMaster();
+		 * request.setAttribute("product", product); request.setAttribute("isNew",
+		 * true); view = "newproduct.jsp"; return view;
+		 */
+		String view="";
+		ProductMaster product = new ProductMaster();
+		        
+		product.setId(Integer.parseInt(request.getParameter("pid")));
+		product.setProductName(request.getParameter("pname"));
+		product.setProductDescription(request.getParameter("pdesc"));
+		product.setCost(Double.parseDouble(request.getParameter("pcost")));
+                
+		try {
+			productService.validateAndAdd(product);
+			request.setAttribute("msg", "Product is added successfully");
+			List<ProductMaster> products = productService.getAllProducts();
+            request.setAttribute("products", products);
+            view="listproducts.jsp";
+		} catch (ProductException e) {
+			request.setAttribute("errMsg", e.getMessage());
+			view = "errorpage.jsp";
+		}
         return view;
 	}
 
 	private String showNewProductForm(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
+		return "newproduct.jsp";
 	}
 
-	private String adminLogin(HttpServletRequest request, HttpServletResponse response) {
-		return "";
+	private String adminLogin(HttpServletRequest request, HttpServletResponse response) throws ProductException {
+		String view="";
+		String userName = request.getParameter("loginid");
+		String pwd = request.getParameter("password");
+		if(userName.equals("admin")&&pwd.equals("admin")) {
+			List<ProductMaster> products = productService.getAllProducts();
+            request.setAttribute("products", products);
+            view="listproducts.jsp";
+		} else {
+			request.setAttribute("errMsg", "Invalid Username or Password!");
+            view = "errorpage.jsp";
+		}
+		return view;
 	}
 
 	

@@ -14,7 +14,7 @@ public class ConnectionFactory {
         if(datasource==null) {            
             try {
                 InitialContext context = new InitialContext();
-                datasource = (DataSource)context.lookup("java:/comp/env/jdbc/MyDB");
+                datasource = (DataSource)context.lookup("java:comp/env/jdbc/MyDB");
             } catch (NamingException e) {
                 e.printStackTrace();
             }
