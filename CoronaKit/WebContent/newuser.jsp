@@ -19,13 +19,13 @@
         </div>
         <div>
             <label>Email</label>
-            <input type="text" name="pemail" required />
+            <input type="email" name="pemail" required />
         </div>
         <div>
             <label>Contact</label>
-            <input type="number" name="pcontact" required }/>
+            <input type="tel" name="pcontact" required />
         </div>     
-        <button>ADD</button>        
+        <button>Proceed to Create Kit</button>        
     </form>
 
 <hr/>	

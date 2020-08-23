@@ -1,0 +1,12 @@
+DROP DATABASE ckitDb;
+
+CREATE DATABASE ckitDb;
+
+USE ckitDb;
+
+CREATE TABLE products (
+ pid INT PRIMARY KEY,
+ pname VARCHAR(50) NOT NULL,
+ pdesc VARCHAR(200) NOT NULL,
+ pcost DECIMAL NOT NULL 
+);

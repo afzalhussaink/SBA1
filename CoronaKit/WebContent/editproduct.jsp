@@ -16,7 +16,7 @@
     <form action="admin?action=updateproduct" method="post">
         <div>
             <label>ProductId</label>
-            <input type="number" name="pid" value="${product.id }" required readonly }/>
+            <input type="number" name="pid" value="${product.id }" required readonly />
         </div>   
         <div>
             <label>Product Name</label>

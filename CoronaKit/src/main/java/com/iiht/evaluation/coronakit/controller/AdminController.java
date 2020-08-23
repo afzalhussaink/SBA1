@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.iiht.evaluation.coronakit.dao.ProductMasterDao;
 import com.iiht.evaluation.coronakit.exception.ProductException;
@@ -43,6 +44,7 @@ public class AdminController extends HttpServlet {
 			throws ServletException, IOException {
 		String action =  request.getParameter("action");
 		String viewName = "";
+		HttpSession session;
 		try {
 			switch (action) {
 			case "login" : 
@@ -67,6 +69,10 @@ public class AdminController extends HttpServlet {
 				viewName = listAllProducts(request, response);
 				break;	
 			case "logout":
+				session = request.getSession(false);
+				session.removeAttribute("logUser");
+				session.invalidate();
+				session=null;
 				viewName = adminLogout(request, response);
 				break;	
 			default : 
@@ -91,7 +97,6 @@ public class AdminController extends HttpServlet {
 	private String listAllProducts(HttpServletRequest request, HttpServletResponse response) {
 		String view="";
         try {
-        	System.out.println("calling get all products");
             List<ProductMaster> products = productService.getAllProducts();
             request.setAttribute("products", products);
             view="listproducts.jsp";
