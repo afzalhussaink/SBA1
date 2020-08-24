@@ -12,10 +12,12 @@
 <hr/>
 	<h2>Admin Login</h2>
 	<form action="admin?action=login" method="post">
-		<% if("failed".equals(request.getParameter("action"))) { %>
+		<% if("failed".equals(request.getAttribute("action"))) { %>
 		<font color=red>Either user name or password is wrong.</font>
-		<% } else if("logout".equals(request.getParameter("action"))) { %>
+		<% } else if("logout".equals(request.getAttribute("action"))) { %>
 		<font color=green>You have successfully logged out!</font>
+		<% } else if("nologin".equals(request.getAttribute("action"))) { %>
+		<font color=red>Please login to proceed</font>
 		<% } else {%>
 		<font color=blue>Welcome!</font>
 		<% } %>

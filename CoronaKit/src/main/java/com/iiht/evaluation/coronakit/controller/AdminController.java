@@ -90,8 +90,10 @@ public class AdminController extends HttpServlet {
 	}
 
 	private String adminLogout(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
+		request.setAttribute("action", "logout");
+		request.getSession().setAttribute("loginFlag", false);
+		return "index.jsp";
+		
 	}
 
 	private String listAllProducts(HttpServletRequest request, HttpServletResponse response) {
@@ -192,16 +194,20 @@ public class AdminController extends HttpServlet {
 	}
 
 	private String adminLogin(HttpServletRequest request, HttpServletResponse response) throws ProductException {
+		System.out.println("Servlet Path:"+request.getServletPath());
 		String view="";
 		String userName = request.getParameter("loginid");
 		String pwd = request.getParameter("password");
+		HttpSession session = request.getSession();
 		if(userName.equals("admin")&&pwd.equals("admin")) {
+			session.setAttribute("loginStatus", true);
 			List<ProductMaster> products = productService.getAllProducts();
             request.setAttribute("products", products);
             view="listproducts.jsp";
 		} else {
-			request.setAttribute("errMsg", "Invalid Username or Password!");
-            view = "errorpage.jsp";
+			session.setAttribute("loginFlag", false);
+			request.setAttribute("action", "failed");
+            view = "index.jsp";
 		}
 		return view;
 	}
