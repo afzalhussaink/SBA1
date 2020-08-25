@@ -1,11 +1,9 @@
 package com.iiht.evaluation.coronakit.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.iiht.evaluation.coronakit.dao.ProductMasterDao;
 import com.iiht.evaluation.coronakit.exception.ProductException;
 import com.iiht.evaluation.coronakit.model.ProductMaster;
 import com.iiht.evaluation.coronakit.service.ProductMasterService;
@@ -22,13 +19,8 @@ import com.iiht.evaluation.coronakit.service.ProductMasterServiceImpl;
 @WebServlet("/admin")
 public class AdminController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ProductMasterDao productMasterDao;
 	
 	private ProductMasterService productService;
-	
-	public void setProductMasterDao(ProductMasterDao productMasterDao) {
-		this.productMasterDao = productMasterDao;
-	}
 
 	@Override
     public void init() throws ServletException {
@@ -121,9 +113,11 @@ public class AdminController extends HttpServlet {
         try {
         	productService.validateAndSave(product);
         	request.setAttribute("msg", "Product is saved successfully");
-			List<ProductMaster> products = productService.getAllProducts();
-            request.setAttribute("products", products);
-            view="listproducts.jsp";
+        	view=listAllProducts(request,response);
+			/*
+			 * List<ProductMaster> products = productService.getAllProducts();
+			 * request.setAttribute("products", products); view="listproducts.jsp";
+			 */
         } catch (ProductException e) {
             request.setAttribute("errMsg", e.getMessage());
             view = "errorpage.jsp";
@@ -152,9 +146,11 @@ public class AdminController extends HttpServlet {
         try {
             productService.deleteProduct(productId);
             request.setAttribute("msg", "Product Deleted!");
-            List<ProductMaster> products = productService.getAllProducts();
-            request.setAttribute("products", products);
-            view="listproducts.jsp";
+            view=listAllProducts(request,response);
+			/*
+			 * List<ProductMaster> products = productService.getAllProducts();
+			 * request.setAttribute("products", products); view="listproducts.jsp";
+			 */
         } catch (ProductException e) {
             request.setAttribute("errMsg", e.getMessage());
             view = "errorpage.jsp";
@@ -179,9 +175,11 @@ public class AdminController extends HttpServlet {
 		try {
 			productService.validateAndAdd(product);
 			request.setAttribute("msg", "Product is added successfully");
-			List<ProductMaster> products = productService.getAllProducts();
-            request.setAttribute("products", products);
-            view="listproducts.jsp";
+			view=listAllProducts(request,response);
+			/*
+			 * List<ProductMaster> products = productService.getAllProducts();
+			 * request.setAttribute("products", products); view="listproducts.jsp";
+			 */
 		} catch (ProductException e) {
 			request.setAttribute("errMsg", e.getMessage());
 			view = "errorpage.jsp";
@@ -200,10 +198,12 @@ public class AdminController extends HttpServlet {
 		String pwd = request.getParameter("password");
 		HttpSession session = request.getSession();
 		if(userName.equals("admin")&&pwd.equals("admin")) {
-			session.setAttribute("loginStatus", true);
-			List<ProductMaster> products = productService.getAllProducts();
-            request.setAttribute("products", products);
-            view="listproducts.jsp";
+			session.setAttribute("loginFlag", true);
+			view=listAllProducts(request,response);
+			/*
+			 * List<ProductMaster> products = productService.getAllProducts();
+			 * request.setAttribute("products", products); view="listproducts.jsp";
+			 */
 		} else {
 			session.setAttribute("loginFlag", false);
 			request.setAttribute("action", "failed");

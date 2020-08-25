@@ -21,11 +21,11 @@ public class ProductMasterServiceImpl implements ProductMasterService {
 	}
 	
 	private boolean isValidName(String name) {
-		return name!=null && (name.length()>3 && name.length()<50);
+		return name!=null && (name.length()>=3 && name.length()<=50);
 	}
 	
 	private boolean isValidDescription(String desc) {
-		return desc!=null && (desc.length()>3 && desc.length()<200);
+		return desc!=null && (desc.length()>=3 && desc.length()<=200);
 	}
 	
 	private boolean isValidCost(Double cost) {

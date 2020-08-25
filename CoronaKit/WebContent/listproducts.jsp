@@ -19,7 +19,7 @@
         	<h3>List of Products</h3>
 			<c:if test="${msg != null }">
 				<p>
-					<strong>${msg }</strong>
+					<font color="blue"><strong>${msg }</strong></font>
 				</p>
 			</c:if>
 			<table border="1" cellspacing="5px" cellpadding="5px">
